@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sangam Patil">
+<meta name="dcterms.date" content="2025-05-15">
+
+<title>Analyzing Key Factors Influencing E-Commerce &amp; Grocery Delivery Times</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Full_Version_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Full_Version_files/libs/quarto-html/quarto.js"></script>
+<script src="Full_Version_files/libs/quarto-html/popper.min.js"></script>
+<script src="Full_Version_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Full_Version_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Full_Version_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Full_Version_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Full_Version_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Full_Version_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Full_Version_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analyzing Key Factors Influencing E-Commerce &amp; Grocery Delivery Times</h1>
+<p class="subtitle lead">Final Project</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sangam Patil </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 15, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><strong><em>Abstract:</em></strong> In the fast-paced domain of e-commerce grocery delivery, minimizing delivery time is critical to ensuring customer satisfaction and sustaining operational efficiency. This study investigates the multifactorial influences on delivery delays across major platforms—Blinkit, Swiggy Instamart, and JioMart—by analyzing large-scale transactional data. Specifically, it examines how static factors like order value and platform type, alongside dynamic environmental variables such as real-time traffic density and weather conditions, affect delivery performance. Using multiple linear regression models and interaction terms, the analysis identifies significant predictors of delay and highlights context-specific operational challenges. The findings provide actionable insights for optimizing last-mile logistics under varying real-world conditions.</p>
+<section id="introduction" class="level1">
+<h1>1. Introduction</h1>
+<p>The rapid growth of e-commerce grocery services has transformed last-mile delivery into a cornerstone of platform competitiveness. As customer expectations for speed and reliability rise, understanding the underlying factors that influence delivery times becomes increasingly vital. While prior studies have addressed platform efficiency and customer satisfaction in general, few have systematically examined how delivery time is shaped by a combination of operational metrics and external disruptions. This research explores two central questions: (1) how platform-specific attributes and order value contribute to delivery speed, and (2) whether dynamic conditions like road traffic density and weather anomalies have a measurable effect on delivery delays. By leveraging real-world datasets and regression modeling, this study aims to uncover insights that can inform intelligent route planning, dynamic resource allocation, and accurate delivery time forecasting in urban logistics.</p>
+</section>
+<section id="research-questions" class="level1">
+<h1>2. Research Questions</h1>
+<section id="how-do-various-factors-such-as-order-value-platform-impact-grocery-delivery-times-in-e-commerce-platforms-blinkit-swiggy-instamart-jiomart" class="level5">
+<h5 class="anchored" data-anchor-id="how-do-various-factors-such-as-order-value-platform-impact-grocery-delivery-times-in-e-commerce-platforms-blinkit-swiggy-instamart-jiomart"><strong>1. How do various factors such as order value, platform impact grocery delivery times in e-commerce platforms (Blinkit, Swiggy Instamart, JioMart)?</strong></h5>
+<p>Lets say you are placing an urgent grocery order late in the evening, expecting a quick delivery for an important family dinner. However, due to a surge in discount-driven orders and an unusually high volume of cash-on-delivery payments, the delivery arrives much later than anticipated, causing frustration. Such incidents highlight the complexity of delivery logistics and the various factors that influence delivery time. Delivery time is a critical metric for customer satisfaction and operational efficiency. A seamless, timely delivery experience not only enhances brand loyalty but also ensures smooth logistics management. Platforms often drive demand and order volume, but if a platform experiences a surge in orders without scaling up its resources, it might lead to operational bottlenecks, affecting delivery efficiency. During peak usage periods, overwhelmed delivery personnel, stock shortages, and increased traffic congestion could contribute to significant delays. Understanding these dynamics helps e-commerce platforms optimize their operations without compromising service speed. Or maybe these are just strategies to attract more customers. Additionally, order date and time play a crucial role—weekend orders may experience longer delivery times due to higher demand, whereas weekday orders might be processed faster with smoother logistics. High-value orders, often requiring extra verification or special handling, can further impact delivery times, making it essential for platforms to streamline logistics for premium customers. This study fills that gap by analyzing real-world data,the role of payment methods and discount strategies in delivery efficiency remains underexplored.</p>
+</section>
+<section id="does-real-time-traffic-density-and-weather-conditions-have-a-measurable-impact-on-delivery-delays" class="level5">
+<h5 class="anchored" data-anchor-id="does-real-time-traffic-density-and-weather-conditions-have-a-measurable-impact-on-delivery-delays"><strong>2. Does real-time traffic density and weather conditions have a measurable impact on delivery delays ?</strong></h5>
+<p>Imagine you’ve just placed an order for essentials during the monsoon season, expecting them to arrive before a storm hits. However, the delivery ends up being delayed by hours. Later, you learn that heavy rainfall had flooded local roads, causing severe traffic jams and forcing delivery riders to reroute through longer, slower paths. Or perhaps your delivery was scheduled during evening rush hour, when urban congestion hits its peak — again, pushing back your expected delivery time. These real-life inconveniences underscore how unpredictable and uncontrollable external conditions like traffic density and weather can severely impact delivery timelines. Delivery time isn’t just a logistical metric; it’s a key indicator of customer satisfaction and service reliability. A delay caused by rain or a traffic jam might be seen as excusable once — but repeated experiences can damage customer trust and loyalty. For e-commerce grocery platforms like Blinkit, Swiggy Instamart, and JioMart, managing deliveries efficiently under varying real-time conditions is a complex challenge. Rush hours, weekend congestion, or weather anomalies such as fog or heatwaves add layers of unpredictability to already intricate delivery networks. Despite advancements in real-time tracking and route optimization, many platforms still don’t systematically integrate real-time traffic and weather data into their delivery prediction models. This oversight often leads to inaccuracies in promised delivery times and unfulfilled customer expectations. This study aims to bridge that gap by examining whether these dynamic, environmental factors — traffic density and weather — have a statistically measurable impact on delivery delays.</p>
+</section>
+</section>
+<section id="hypothesis" class="level1">
+<h1>3. Hypothesis</h1>
+<section id="existing-research-and-gaps" class="level5">
+<h5 class="anchored" data-anchor-id="existing-research-and-gaps">Existing Research and Gaps</h5>
+<p>Several studies have explored factors influencing delivery performance in e-commerce and grocery delivery services. However, existing literature lacks an in-depth comparative analysis of multiple platforms (Blinkit, Swiggy Instamart, and JioMart) and their unique operational factors. Additionally, while studies have examined the impact of delivery distance and order value on delivery time, they have not comprehensively assessed how payment methods and discount-driven demand surges influence delays in the context of online grocery delivery. <br> Moreover, research such as Chopra et al.&nbsp;(2020) explored consumer behavior in online grocery retailing, but did not analyze how operational variations between platforms impact efficiency. Also, the role of payment methods (e.g., COD vs.&nbsp;digital) in causing delays remains underexplored in grocery logistics, despite COD being a common cause of inefficiencies in traditional retail logistics (as highlighted in Patel et al., 2023). The relationship between discount incentives and delivery performance is well-documented in retail (Jha &amp; Kumar, 2023), but its effect on last-mile grocery logistics and time frame or order remains largely untested.</p>
+</section>
+<section id="hypotheses-to-be-tested" class="level5">
+<h5 class="anchored" data-anchor-id="hypotheses-to-be-tested">Hypotheses to be Tested</h5>
+<p><strong>H1:</strong> Order value influence delivery time, with high value orders experiencing longer delays compared to low value.<br></p>
+<p><strong>H2:</strong> Real-time traffic density and weather conditions significantly impact food delivery time.<br></p>
+</section>
+</section>
+<section id="descriptive-statistics" class="level1">
+<h1>4. Descriptive Statistics</h1>
+<section id="data-description" class="level5">
+<h5 class="anchored" data-anchor-id="data-description">Data Description</h5>
+<p>Both datasets offer a rich and comprehensive representation of real-world trends in the rapidly growing online grocery and food delivery ecosystem. Derived from transactional and operational logs of major Indian e-commerce platforms—Blinkit, Swiggy Instamart, and JioMart—they capture granular, order-level data that enables deep exploration into logistics efficiency, consumer preferences, and service reliability. The datasets are meticulously structured, containing over 100,000 rows each, and include variables such as delivery time, order value, platform type, traffic conditions, weather, and payment methods, making them highly suitable for conducting robust statistical analysis and building predictive models. One dataset emphasizes time-sensitive metrics, such as order timestamps, traffic density, and real-time weather conditions—allowing for precise modeling of environmental impacts on delivery times. The second dataset focuses more on platform-based comparisons by incorporating customer feedback, service ratings, discount effects, and order-level metadata (like vehicle condition and number of simultaneous deliveries). Together, these datasets provide a 360-degree view of delivery performance, enabling researchers to test hypotheses around delay factors, evaluate customer satisfaction trends, and explore platform-level operational strategies. These datasets are particularly valuable for data analysts and businesses aiming to optimize last-mile delivery, enhance the customer experience, reduce operational bottlenecks, and design scalable, data-driven delivery frameworks. The breadth and depth of the features included make them ideal for comparative studies, regression modeling, machine learning applications, and business intelligence dashboards focused on the digital retail sector.</p>
+</section>
+<section id="data-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-1">Data 1</h2>
+<section id="key-variables-of-interest-for-research" class="level5">
+<h5 class="anchored" data-anchor-id="key-variables-of-interest-for-research">Key Variables of Interest for Research</h5>
+<p>To address the research questions, the following variables play a crucial role:<br> 1. Order ID: Unique identifier for each order.<br> 2. Order Date &amp; Time: When the order was placed.<br> 3. Delivery Time – The time taken to complete an order from placement to delivery. This is a key metric for understanding service efficiency and factors affecting delays.<br> 4. Order Value (INR) – The total monetary value of an order. Higher-value orders may require additional processing, impacting delivery time.<br> 5. Platform – The e-commerce service provider (Blinkit, Swiggy Instamart, JioMart). Differences in operational efficiency across these platforms may result in variations in delivery time.<br> 6️. Discount Applied (INR) – The amount of discount provided on an order. Higher discounts may increase order volume, potentially affecting delivery speed.<br> 7. Service Rating (1-5) – Customer ratings for the delivery service, which can provide insights into customer satisfaction and service quality.<br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/data1.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Order.ID Customer.ID Platform Order.Date...Time Delivery.Time..Minutes.
+1 ORD000001    CUST2824  JioMart           19:29.5                      30
+2 ORD000002    CUST1409  Blinkit           54:29.5                      16
+3 ORD000003    CUST5506  JioMart           21:29.5                      25
+4 ORD000004    CUST5012  JioMart           19:29.5                      42
+5 ORD000005    CUST4657  Blinkit           49:29.5                      30
+6 ORD000006    CUST3286  Blinkit           36:29.5                      25
+     Product.Category Order.Value..INR.             Customer.Feedback
+1 Fruits &amp; Vegetables               382 Fast delivery, great service!
+2               Dairy               279           Quick and reliable!
+3           Beverages               599     Items missing from order.
+4           Beverages               946     Items missing from order.
+5           Beverages               334 Fast delivery, great service!
+6       Personal Care              1939     Items missing from order.
+  Service.Rating Delivery.Delay Refund.Requested
+1              5             No               No
+2              5             No               No
+3              2             No              Yes
+4              2            Yes              Yes
+5              5             No               No
+6              2             No              Yes</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Order.ID         Customer.ID          Platform         Order.Date...Time 
+ Length:100000      Length:100000      Length:100000      Length:100000     
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+ Delivery.Time..Minutes. Product.Category   Order.Value..INR.
+ Min.   : 5.00           Length:100000      Min.   :  50     
+ 1st Qu.:23.00           Class :character   1st Qu.: 283     
+ Median :30.00           Mode  :character   Median : 481     
+ Mean   :29.54                              Mean   : 591     
+ 3rd Qu.:36.00                              3rd Qu.: 770     
+ Max.   :76.00                              Max.   :2000     
+ Customer.Feedback  Service.Rating  Delivery.Delay     Refund.Requested  
+ Length:100000      Min.   :1.000   Length:100000      Length:100000     
+ Class :character   1st Qu.:2.000   Class :character   Class :character  
+ Mode  :character   Median :3.000   Mode  :character   Mode  :character  
+                    Mean   :3.241                                        
+                    3rd Qu.:5.000                                        
+                    Max.   :5.000                                        </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 100,000
+Columns: 11
+$ Order.ID                &lt;chr&gt; "ORD000001", "ORD000002", "ORD000003", "ORD000…
+$ Customer.ID             &lt;chr&gt; "CUST2824", "CUST1409", "CUST5506", "CUST5012"…
+$ Platform                &lt;chr&gt; "JioMart", "Blinkit", "JioMart", "JioMart", "B…
+$ Order.Date...Time       &lt;chr&gt; "19:29.5", "54:29.5", "21:29.5", "19:29.5", "4…
+$ Delivery.Time..Minutes. &lt;int&gt; 30, 16, 25, 42, 30, 25, 22, 16, 39, 51, 25, 11…
+$ Product.Category        &lt;chr&gt; "Fruits &amp; Vegetables", "Dairy", "Beverages", "…
+$ Order.Value..INR.       &lt;int&gt; 382, 279, 599, 946, 334, 1939, 1693, 195, 182,…
+$ Customer.Feedback       &lt;chr&gt; "Fast delivery, great service!", "Quick and re…
+$ Service.Rating          &lt;int&gt; 5, 5, 2, 2, 5, 2, 5, 1, 5, 2, 5, 5, 1, 2, 5, 4…
+$ Delivery.Delay          &lt;chr&gt; "No", "No", "No", "Yes", "No", "No", "No", "No…
+$ Refund.Requested        &lt;chr&gt; "No", "No", "Yes", "Yes", "No", "Yes", "No", "…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data1, <span class="fu">aes</span>(<span class="at">x =</span> Delivery.Time..Minutes.)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">binwidth =</span> <span class="dv">5</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">"skyblue"</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Delivery Time Distribution"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Delivery Time (Minutes)"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="data-2" class="level2">
+<h2 class="anchored" data-anchor-id="data-2">Data 2</h2>
+<section id="key-variables-of-interest-for-research-1" class="level5">
+<h5 class="anchored" data-anchor-id="key-variables-of-interest-for-research-1">Key Variables of Interest for Research</h5>
+<p>To address the research questions, the following variables play a crucial role:<br> 1. ID – Unique identifier for each food delivery order.<br> 2. Delivery_person_ID – Unique ID assigned to each delivery person.<br> 3. Delivery_person_Age – Age of the delivery person.<br> 4. Delivery_person_Ratings – Customer rating of the delivery person (likely on a scale of 1–5).<br> 5. Restaurant_latitude – Latitude of the restaurant from which the order was placed.<br> 6. Restaurant_longitude – Longitude of the restaurant.<br> 7. Delivery_location_latitude – Latitude of the customer’s delivery address.<br> 8. Delivery_location_longitude – Longitude of the customer’s delivery address.<br> 9. Order_Date – Date on which the order was placed.<br> 10. Time_Orderd – Time at which the order was placed.<br> 11. Time_Order_picked – Time at which the order was picked up by the delivery person.<br> 12. Weatherconditions – Weather conditions during delivery (e.g., Clear, Fog, Storm).<br> 13. Road_traffic_density – Traffic level during delivery (e.g., Low, Medium, High, Jam).<br> 14. Vehicle_condition – Condition of the vehicle used by the delivery person (likely on a scale).<br> 15. Type_of_order – Category/type of food ordered (e.g., snacks, meal, drinks).<br> 16. Type_of_vehicle – Type of vehicle used for delivery (e.g., scooter, bike).<br> 17. multiple_deliveries – Number of deliveries being handled simultaneously.<br> 18. Festival – Whether the order was placed during a festival (Yes/No).<br> 19. City – City in which the delivery took place.<br> 20. Time_taken(min) – Total time taken to complete the delivery (in minutes).<br> 21. geo_distance_km (calculated further)- Approximate distance in KM from pick-up point to delivery location. <br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data2.csv"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 20
+  ID     Delivery_person_ID Delivery_person_Age Delivery_person_Ratings
+  &lt;chr&gt;  &lt;chr&gt;                            &lt;dbl&gt;                   &lt;dbl&gt;
+1 0x4607 INDORES13DEL02                      37                     4.9
+2 0xb379 BANGRES18DEL02                      34                     4.5
+3 0x5d6d BANGRES19DEL01                      23                     4.4
+4 0x7a6a COIMBRES13DEL02                     38                     4.7
+5 0x70a2 CHENRES12DEL01                      32                     4.6
+6 0x9bb4 HYDRES09DEL03                       22                     4.8
+# ℹ 16 more variables: Restaurant_latitude &lt;dbl&gt;, Restaurant_longitude &lt;dbl&gt;,
+#   Delivery_location_latitude &lt;dbl&gt;, Delivery_location_longitude &lt;dbl&gt;,
+#   Order_Date &lt;chr&gt;, Time_Orderd &lt;chr&gt;, Time_Order_picked &lt;time&gt;,
+#   Weatherconditions &lt;chr&gt;, Road_traffic_density &lt;chr&gt;,
+#   Vehicle_condition &lt;dbl&gt;, Type_of_order &lt;chr&gt;, Type_of_vehicle &lt;chr&gt;,
+#   multiple_deliveries &lt;dbl&gt;, Festival &lt;chr&gt;, City &lt;chr&gt;,
+#   `Time_taken(min)` &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      ID            Delivery_person_ID Delivery_person_Age
+ Length:45593       Length:45593       Min.   :15.00      
+ Class :character   Class :character   1st Qu.:25.00      
+ Mode  :character   Mode  :character   Median :30.00      
+                                       Mean   :29.57      
+                                       3rd Qu.:35.00      
+                                       Max.   :50.00      
+                                       NA's   :1854       
+ Delivery_person_Ratings Restaurant_latitude Restaurant_longitude
+ Min.   :1.000           Min.   :-30.91      Min.   :-88.37      
+ 1st Qu.:4.500           1st Qu.: 12.93      1st Qu.: 73.17      
+ Median :4.700           Median : 18.55      Median : 75.90      
+ Mean   :4.634           Mean   : 17.02      Mean   : 70.23      
+ 3rd Qu.:4.900           3rd Qu.: 22.73      3rd Qu.: 78.04      
+ Max.   :6.000           Max.   : 30.91      Max.   : 88.43      
+ NA's   :1908                                                    
+ Delivery_location_latitude Delivery_location_longitude  Order_Date       
+ Min.   : 0.01              Min.   : 0.01               Length:45593      
+ 1st Qu.:12.99              1st Qu.:73.28               Class :character  
+ Median :18.63              Median :76.00               Mode  :character  
+ Mean   :17.47              Mean   :70.85                                 
+ 3rd Qu.:22.79              3rd Qu.:78.11                                 
+ Max.   :31.05              Max.   :88.56                                 
+                                                                          
+ Time_Orderd        Time_Order_picked Weatherconditions  Road_traffic_density
+ Length:45593       Length:45593      Length:45593       Length:45593        
+ Class :character   Class1:hms        Class :character   Class :character    
+ Mode  :character   Class2:difftime   Mode  :character   Mode  :character    
+                    Mode  :numeric                                           
+                                                                             
+                                                                             
+                                                                             
+ Vehicle_condition Type_of_order      Type_of_vehicle    multiple_deliveries
+ Min.   :0.000     Length:45593       Length:45593       Min.   :0.0000     
+ 1st Qu.:0.000     Class :character   Class :character   1st Qu.:0.0000     
+ Median :1.000     Mode  :character   Mode  :character   Median :1.0000     
+ Mean   :1.023                                           Mean   :0.7447     
+ 3rd Qu.:2.000                                           3rd Qu.:1.0000     
+ Max.   :3.000                                           Max.   :3.0000     
+                                                         NA's   :993        
+   Festival             City           Time_taken(min)   
+ Length:45593       Length:45593       Length:45593      
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  
+                                                         
+                                                         
+                                                         
+                                                         </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 45,593
+Columns: 20
+$ ID                          &lt;chr&gt; "0x4607", "0xb379", "0x5d6d", "0x7a6a", "0…
+$ Delivery_person_ID          &lt;chr&gt; "INDORES13DEL02", "BANGRES18DEL02", "BANGR…
+$ Delivery_person_Age         &lt;dbl&gt; 37, 34, 23, 38, 32, 22, 33, 35, 22, 36, 21…
+$ Delivery_person_Ratings     &lt;dbl&gt; 4.9, 4.5, 4.4, 4.7, 4.6, 4.8, 4.7, 4.6, 4.…
+$ Restaurant_latitude         &lt;dbl&gt; 22.74505, 12.91304, 12.91426, 11.00367, 12…
+$ Restaurant_longitude        &lt;dbl&gt; 75.89247, 77.68324, 77.67840, 76.97649, 80…
+$ Delivery_location_latitude  &lt;dbl&gt; 22.76505, 13.04304, 12.92426, 11.05367, 13…
+$ Delivery_location_longitude &lt;dbl&gt; 75.91247, 77.81324, 77.68840, 77.02649, 80…
+$ Order_Date                  &lt;chr&gt; "19-03-2022", "25-03-2022", "19-03-2022", …
+$ Time_Orderd                 &lt;chr&gt; "11:30:00", "19:45:00", "08:30:00", "18:00…
+$ Time_Order_picked           &lt;time&gt; 11:45:00, 19:50:00, 08:45:00, 18:10:00, 1…
+$ Weatherconditions           &lt;chr&gt; "conditions Sunny", "conditions Stormy", "…
+$ Road_traffic_density        &lt;chr&gt; "High", "Jam", "Low", "Medium", "High", "J…
+$ Vehicle_condition           &lt;dbl&gt; 2, 2, 0, 0, 1, 0, 1, 2, 0, 2, 1, 1, 0, 1, …
+$ Type_of_order               &lt;chr&gt; "Snack", "Snack", "Drinks", "Buffet", "Sna…
+$ Type_of_vehicle             &lt;chr&gt; "motorcycle", "scooter", "motorcycle", "mo…
+$ multiple_deliveries         &lt;dbl&gt; 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 0, 1, …
+$ Festival                    &lt;chr&gt; "No", "No", "No", "No", "No", "No", "No", …
+$ City                        &lt;chr&gt; "Urban", "Metropolitian", "Urban", "Metrop…
+$ `Time_taken(min)`           &lt;chr&gt; "(min) 24", "(min) 33", "(min) 26", "(min)…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>distance_m <span class="ot">&lt;-</span> <span class="fu">distHaversine</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(data2<span class="sc">$</span>Restaurant_longitude, data2<span class="sc">$</span>Restaurant_latitude),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(data2<span class="sc">$</span>Delivery_location_longitude, data2<span class="sc">$</span>Delivery_location_latitude)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>geo_distance_km <span class="ot">&lt;-</span> distance_m <span class="sc">/</span> <span class="dv">1000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">rename</span>(data2, <span class="at">Time_taken_min =</span> <span class="st">`</span><span class="at">Time_taken(min)</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data2<span class="sc">$</span>Time_taken_min <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(data2<span class="sc">$</span>Time_taken_min, <span class="st">"</span><span class="sc">\\</span><span class="st">d+$"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data2, <span class="fu">aes</span>(<span class="at">x =</span> Time_taken_min)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">binwidth =</span> <span class="dv">5</span>, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">"skyblue"</span>, </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">"darkred"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Delivery Time Distribution"</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Delivery Time (Minutes)"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="hypothesis-testing" class="level1">
+<h1>5. Hypothesis Testing</h1>
+<section id="for-h1" class="level2">
+<h2 class="anchored" data-anchor-id="for-h1">5.1. For H1</h2>
+<section id="training-testing-models" class="level4">
+<h4 class="anchored" data-anchor-id="training-testing-models">Training &amp; Testing Models</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>h1_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Delivery.Time..Minutes. <span class="sc">~</span> Order.Value..INR., <span class="at">data =</span> data1)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Delivery.Time..Minutes. ~ Order.Value..INR., data = data1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-24.778  -6.566   0.306   6.520  46.556 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       2.943e+01  5.459e-02 539.200   &lt;2e-16 ***
+Order.Value..INR. 1.724e-04  7.545e-05   2.285   0.0223 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.959 on 99998 degrees of freedom
+Multiple R-squared:  5.22e-05,  Adjusted R-squared:  4.22e-05 
+F-statistic:  5.22 on 1 and 99998 DF,  p-value: 0.02233</code></pre>
+</div>
+</div>
+<section id="interpretation" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation">Interpretation</h6>
+<p>The linear regression model examines the relationship between delivery time (in minutes) and order value (in INR). The intercept of the model is approximately 29.43, indicating that the average delivery time, even when the order value is ₹0 (which is impossible technically, but we can consider this as baseline time), is around 29.43 minutes. The coefficient for order value is 0.0001724, suggesting that for every ₹1 increase in order value, the delivery time increases by roughly 0.00017 minutes, or about one second per ₹60 spent. Although the p-value associated with the order value is 0.0223, indicating that the relationship is statistically significant at the 5% level, the practical significance of this finding is minimal. The increase in delivery time associated with order value is extremely small and unlikely to have a meaningful real-world impact. Furthermore, the R-squared value is only 0.0052%, which means that order value explains virtually none of the variation in delivery time. In conclusion, while there is a statistically significant association between order value and delivery time, the effect is so small that it is not practically useful for predicting delivery durations. This suggests that other factors, such as traffic conditions, distance, platform efficiency, and weather, may be far more influential in determining how long a delivery takes.<br></p>
+<p>Here, the null hypothesis (H₀) is: There is no relationship between order value and delivery time. <br></p>
+<p>Mathematically, this means: H₀: β₁ = 0 <br></p>
+<p>Where β₁ is the coefficient of the predictor variable Order.Value..INR.. <br> This hypothesis suggests that changes in the order value have no effect on the delivery time. Since the p-value for Order.Value..INR. is 0.0223, which is less than 0.05, we reject the null hypothesis at the 5% significance level. This means there is statistical evidence of a (very weak) relationship between order value and delivery time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h1_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-1" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-1">Interpretation</h6>
+<ol type="1">
+<li>Residuals vs Fitted : The residuals appear randomly scattered around the horizontal red line at zero, but the concentration of residuals within a very narrow band suggests a weak relationship between order value and delivery time. There is no clear funnel shape, so heteroscedasticity is not a major concern. However, the residuals being tightly clustered hints that the model has limited explanatory power.<br></li>
+<li>Q-Q Plot : While the points follow the 45-degree line fairly well in the middle, there is clear deviation at the tails. This suggests that there may be some non-normality in the residuals—possibly due to outliers or heavy-tailed errors—which could affect hypothesis tests and confidence intervals. <br></li>
+<li>Scale-Location Plot : The plot shows a mostly horizontal line, and the spread of points is fairly uniform, indicating that the assumption of constant variance is reasonably satisfied. Still, the model may be too simplistic, as all points lie tightly within a narrow band, showing limited variation explained.<br></li>
+<li>Residuals vs Leverage : Most observations have low leverage, and none stand out with both high leverage and large residuals, meaning there are no highly influential outliers significantly affecting the model. The Cook’s distance lines confirm that no points exceed the usual influence threshold.<br> Overall, the diagnostics suggest that the linear regression model h1_model1 meets most basic assumptions, such as homoscedasticity and lack of influential outliers. However, the Q-Q plot reveals slight non-normality in the residuals, and the very tight spread of residuals across all plots indicates that the predictor variable (Order.Value..INR.) explains very little variation in delivery time. This aligns with the previously noted very low R-squared value, suggesting the model has poor explanatory power and might benefit from additional predictors or interaction terms.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>h1_model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Delivery.Time..Minutes. <span class="sc">~</span> Order.Value..INR. <span class="sc">+</span> Platform, <span class="at">data =</span> data1)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Delivery.Time..Minutes. ~ Order.Value..INR. + Platform, 
+    data = data1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-24.874  -6.609   0.272   6.553  46.617 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              2.937e+01  7.032e-02 417.681   &lt;2e-16 ***
+Order.Value..INR.        1.724e-04  7.545e-05   2.285   0.0223 *  
+PlatformJioMart          1.594e-01  7.721e-02   2.065   0.0389 *  
+PlatformSwiggy Instamart 2.445e-02  7.702e-02   0.317   0.7509    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.959 on 99996 degrees of freedom
+Multiple R-squared:  0.0001016, Adjusted R-squared:  7.161e-05 
+F-statistic: 3.387 on 3 and 99996 DF,  p-value: 0.01725</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-2" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-2">Interpretation</h6>
+<p>The intercept is approximately 29.37 minutes, meaning the expected delivery time for a Blinkit order (the baseline platform) with an order value of 0 is about 29.37 minutes. The coefficient for order value is 0.0001724, and it is statistically significant (p = 0.0223). This indicates that for every ₹1 increase in order value, delivery time increases by approximately 0.00017 minutes (about 0.01 seconds), which is a very small but statistically significant effect. The coefficient for PlatformJioMart is 0.1594, which means that compared to Blinkit, JioMart’s average delivery time is about 0.16 minutes (~10 seconds) longer, and this difference is statistically significant (p = 0.0389). The coefficient for PlatformSwiggy Instamart is 0.0245, indicating only a marginal 1.5-second increase in delivery time compared to Blinkit, and this is not statistically significant (p = 0.7509).<br></p>
+<p>This model shows that order value and platform choice (specifically JioMart vs Blinkit) have a small but statistically significant impact on delivery time. However, the overall explanatory power of the model is still very low (Adjusted R² ≈ 0.00007), suggesting that there are other major factors influencing delivery time not captured in this model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h1_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-3" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-3">Interpretation</h6>
+<ol type="1">
+<li>Residuals vs Fitted Plot : The residuals appear fairly evenly spread around the red horizontal line, which represents zero. However, there is a dense horizontal band and a slight funneling pattern, indicating some heteroscedasticity —the variance of residuals may increase slightly with higher fitted values. There’s also a noticeable concentration of residuals within a very narrow range of fitted values (between 29.4 and 29.9), suggesting the model may not be capturing much variation, and fitted values are overly compressed. This may reflect low variability in Delivery.Time..Minutes. or insufficiently informative predictors.</li>
+<li>Q-Q Plot : The points should fall along the 45-degree reference line if normality holds. In your Q-Q plot, the central portion of the residuals follows the line well, but significant deviations occur at both tails, especially at the right tail (upper outliers). This indicates non-normality, likely caused by a few extreme values or outliers. It suggests the model errors are not perfectly normally distributed, which can affect confidence intervals and hypothesis tests.</li>
+<li>Scale-Location Plot : The horizontal red line should ideally be flat, and the residuals should be randomly spread around it. In this plot, there’s a relatively flat trend, but again a dense clustering of points suggests that the residuals are not well spread across different levels of fitted values. This could imply limited predictive power or poor feature variability, as the residual spread remains relatively uniform but potentially reflects that the model isn’t sensitive to changing input values.</li>
+<li>Residuals vs Leverage :Most of the points lie well within the low-leverage region, with few having large residuals or leverage values. There’s no evidence of points breaching Cook’s distance lines, which means no overly influential observations. This suggests the model’s coefficients are relatively stable and not being distorted by outliers.</li>
+</ol>
+<p>The diagnostics indicate that while the model is not severely violated in terms of linear regression assumptions, there are areas of concern:<br> 1. The model appears to be too simplistic, potentially due to limited or weak predictors (<code>Order.Value</code> and <code>Platform</code>), as seen in the narrow range of fitted values and concentrated residuals.<br> 2. There is mild heteroscedasticity and non-normality in residuals, especially in the tails, which might impact the reliability of p-values and confidence intervals.<br> 3. No significant leverage points or influential observations are affecting the model’s stability, which is a good sign.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>h1_model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Delivery.Time..Minutes. <span class="sc">~</span> Order.Value..INR. <span class="sc">+</span> Platform <span class="sc">+</span> Order.Value..INR.<span class="sc">*</span>Platform, <span class="at">data =</span> data1)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Delivery.Time..Minutes. ~ Order.Value..INR. + Platform + 
+    Order.Value..INR. * Platform, data = data1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-24.963  -6.595   0.192   6.528  46.700 
+
+Coefficients:
+                                             Estimate Std. Error t value
+(Intercept)                                 2.928e+01  9.449e-02 309.879
+Order.Value..INR.                           3.271e-04  1.310e-04   2.498
+PlatformJioMart                             2.125e-01  1.339e-01   1.588
+PlatformSwiggy Instamart                    2.435e-01  1.335e-01   1.823
+Order.Value..INR.:PlatformJioMart          -9.019e-05  1.853e-04  -0.487
+Order.Value..INR.:PlatformSwiggy Instamart -3.703e-04  1.845e-04  -2.007
+                                           Pr(&gt;|t|)    
+(Intercept)                                  &lt;2e-16 ***
+Order.Value..INR.                            0.0125 *  
+PlatformJioMart                              0.1123    
+PlatformSwiggy Instamart                     0.0682 .  
+Order.Value..INR.:PlatformJioMart            0.6265    
+Order.Value..INR.:PlatformSwiggy Instamart   0.0447 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 9.958 on 99994 degrees of freedom
+Multiple R-squared:  0.0001455, Adjusted R-squared:  9.551e-05 
+F-statistic:  2.91 on 5 and 99994 DF,  p-value: 0.01246</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-4" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-4">Interpretation</h6>
+<p>This multiple linear regression model explores how order value, e-commerce platform, and their interaction influence delivery time (in minutes). The model includes interaction terms to test whether the effect of order value on delivery time differs across platforms (Blinkit, JioMart, Swiggy Instamart).<br> 1. Intercept (29.28 minutes): This is the baseline predicted delivery time for Blinkit when the order value is zero.<br> 2. Order Value (₹) Main Effect (0.000327): For Blinkit, each ₹1 increase in order value is associated with a 0.000327-minute increase in delivery time (about 0.02 seconds), and this effect is statistically significant (p = 0.0125).<br> 3. Platform (Main Effects):<br> 3.1. JioMart (0.2125 minutes): Compared to Blinkit, JioMart orders take ~12.75 seconds longer, not statistically significant (p = 0.1123).<br> 3.2. Swiggy Instamart (0.2435 minutes): About 14.6 seconds longer than Blinkit, marginally significant (p = 0.0682).<br> 4. Interaction Effects:<br> 4.1. Order Value × JioMart (–0.000090): The order value effect on delivery time is slightly less for JioMart than for Blinkit, but this difference is not statistically significant (p = 0.6265).<br> 4.2. Order Value × Swiggy Instamart (–0.000370): The effect of order value on delivery time is significantly weaker for Swiggy Instamart compared to Blinkit (p = 0.0447), suggesting that higher order values might slow down Blinkit more than Swiggy Instamart.<br></p>
+<p>The model indicates that order value does have a statistically significant impact on delivery time, and this relationship varies notably for Swiggy Instamart, where the impact is weaker. Although the platform main effects are not strongly significant, the interaction term for Swiggy is, highlighting its relatively efficient handling of higher-value orders. However, the overall R² remains low (0.0001455), meaning the model explains very little of the variance in delivery times — suggesting that other factors like traffic, weather, and operational load might play a larger role.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h1_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-5" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-5">Interpretation:</h6>
+<ol type="1">
+<li>Residuals vs Fitted Plot : Similar to the previous model (h1_model2), the residuals are mostly centered around the horizontal red line, with no strong pattern. However, there’s again a dense clustering of residuals within a narrow band of fitted values, which suggests that the model’s predicted values do not vary significantly across observations. While the interaction term may have added some complexity, it has not significantly improved variability or explained additional variance. The spread of residuals still appears fairly symmetrical, indicating that the assumption of linearity is not heavily violated, but the model may be too constrained or the predictors too weak to fully capture delivery time variations.</li>
+<li>Q-Q Plot (Top Right) : In this plot, most points adhere to the line fairly well, but there is again a noticeable deviation at the extremes, especially on the right tail. This indicates the presence of outliers or non-normality in the residuals, although the deviation is slightly more concentrated and less scattered than in h1_model2, suggesting a mild improvement in normality. Nonetheless, the residuals still deviate from ideal normality, which may affect the robustness of statistical inference like confidence intervals.</li>
+<li>Scale-Location Plot (Bottom Left) : The red line is fairly horizontal and flat, which is a good sign. The standardized residuals show consistent spread across fitted values, indicating that the variance of residuals is mostly stable (homoscedastic). However, again, the extremely narrow range of fitted values limits the ability to detect whether heteroscedasticity is truly absent. This may point to a deeper issue—perhaps the predictors (even with interaction) are not strong enough to drive variability in delivery time.</li>
+<li>Residuals vs Leverage Plot : In h1_model3, most observations are tightly clustered at the lower end of the leverage scale, with a few residuals exceeding a standardized value of 2. Importantly, no points fall beyond the Cook’s distance threshold, which suggests that there are no highly influential observations in the data. This is a good indication that the model’s estimates are not being skewed by any single or small group of observations.</li>
+</ol>
+<p>The diagnostic plots for h1_model3 suggest that adding the interaction term between Order.Value..INR. and Platform introduced marginal improvements, particularly in terms of residual spread and slight tightening of the normality curve. However, the core limitations remain: 1. The fitted values are still tightly clustered, implying limited explanatory power. 2. There are minor violations of the normality assumption (as seen in the Q-Q plot). 3. Residuals are fairly homoscedastic, indicating consistent error variance across predictions. 4. There are no problematic influential observations, ensuring model robustness in terms of influence.</p>
+</section>
+</section>
+<section id="comparing-models" class="level4">
+<h4 class="anchored" data-anchor-id="comparing-models">Comparing Models</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(h1_model1, h1_model2, h1_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          df      AIC
+h1_model1  3 743481.5
+h1_model2  5 743480.5
+h1_model3  7 743480.1</code></pre>
+</div>
+</div>
+<section id="interpretation-6" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-6">Interpretation:</h6>
+<p>The AIC comparison between the three models—h1_model1, h1_model2, and h1_model3—shows a gradual decrease in AIC values from 743481.5 to 743480.5 and finally to 743480.1, as the models increase in complexity (with 3, 5, and 7 degrees of freedom, respectively). A lower AIC value indicates a better-fitting model when considering both goodness-of-fit and model complexity. Although h1_model3 technically has the best AIC score, the improvement is marginal compared to the simpler models. The difference in AIC between the models is less than 2 units, which is generally considered negligible. Therefore, unless the additional variables or interaction terms in h1_model3 are strongly supported by theory or provide meaningful interpretative value, it may be more appropriate to choose h1_model2 for a more parsimonious model that still maintains a good fit. In cases where simplicity and interpretability are preferred, even h1_model1 could be acceptable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(h1_model1, h1_model2, h1_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          df      BIC
+h1_model1  3 743510.0
+h1_model2  5 743528.1
+h1_model3  7 743546.7</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-7" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-7">Interpretation:</h6>
+<p>The BIC (Bayesian Information Criterion) results for the models h1_model1, h1_model2, and h1_model3 show that the simplest model, h1_model1, has the lowest BIC value (743510.0), followed by h1_model2 (743528.1) and then h1_model3 (743546.7). Unlike AIC, BIC imposes a stronger penalty for model complexity (i.e., the number of parameters used). Therefore, the model with the lowest BIC is preferred when aiming for simplicity and avoiding overfitting. In this case, h1_model1 is clearly the best model according to BIC, as it strikes the best balance between fit and simplicity. Even though the more complex models (h1_model2 and h1_model3) might slightly improve fit, the gain is not enough to justify the added complexity, as evidenced by their higher BIC values. Thus, based on BIC, it would be advisable to choose h1_model1 for being the most efficient and parsimonious model.</p>
+</section>
+</section>
+<section id="final-model" class="level4">
+<h4 class="anchored" data-anchor-id="final-model">Final Model</h4>
+<p>Based on the comparative analysis of the AIC and BIC metrics, h1_model2 emerges as the most promising and technically appropriate final model. While h1_model3 yields the lowest AIC (743480.1), the marginal improvement over h1_model2 (AIC = 743480.5) is less than 1 unit—well within the commonly accepted threshold of 2 units, indicating that the added complexity does not yield a meaningful gain in model fit. From a Bayesian Information Criterion (BIC) perspective, which imposes a stricter penalty for model complexity, h1_model2 (BIC = 743528.1) performs more favorably than h1_model3 (BIC = 743546.7). This suggests that h1_model2 offers a better trade-off between explanatory power and parsimony. Given that model interpretability and generalizability are often critical—particularly in applied settings where overfitting must be avoided— h1_model2 stands out as the optimal choice. It balances statistical performance with interpretability, avoiding unnecessary model inflation while still capturing key relationships within the data. Therefore, h1_model2 is recommended as the final model for both robust inference and practical deployment.</p>
+</section>
+</section>
+<section id="for-h2" class="level2">
+<h2 class="anchored" data-anchor-id="for-h2">5.2. For H2</h2>
+<p>Testing the following hypotheses:</p>
+<p><strong>Hypothesis 1:</strong> Real-time traffic and weather significantly affect delivery time. <strong>H₀:</strong> Road traffic and weather have no impact on delivery time. <strong>H₁:</strong> Road traffic and weather have a significant impact.</p>
+<p><strong>Hypothesis 2:</strong> Geo distance correlates positively with delivery time. <strong>H₀:</strong> Distance does not influence delivery time. <strong>H₁:</strong> Longer distances increase delivery time.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>h2_model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Time_taken_min <span class="sc">~</span> geo_distance_km <span class="sc">+</span> Road_traffic_density, <span class="at">data =</span> data2)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h2_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Time_taken_min ~ geo_distance_km + Road_traffic_density, 
+    data = data2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-21.1780  -6.1777  -0.2685   5.7317  27.8310 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 2.724e+01  1.275e-01 213.598  &lt; 2e-16 ***
+geo_distance_km            -2.622e-05  3.867e-05  -0.678 0.497753    
+Road_traffic_densityJam     3.937e+00  1.461e-01  26.944  &lt; 2e-16 ***
+Road_traffic_densityLow    -5.973e+00  1.446e-01 -41.300  &lt; 2e-16 ***
+Road_traffic_densityMedium -5.402e-01  1.511e-01  -3.574 0.000351 ***
+Road_traffic_densityNaN    -6.063e-01  3.926e-01  -1.545 0.122468    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.483 on 45587 degrees of freedom
+Multiple R-squared:  0.1829,    Adjusted R-squared:  0.1828 
+F-statistic:  2040 on 5 and 45587 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<section id="interpretation-8" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-8">Interpretation:</h6>
+<p>The regression results reveal how geo_distance_km and Road_traffic_density influence Time_taken_min (delivery time). The model is statistically significant overall (F-statistic = 2040, p &lt; 2.2e-16), though it explains a modest proportion of the variance (Adjusted R² = 0.1828). Among the predictors, road traffic density has a strong and significant impact on delivery time. Specifically, when traffic is classified as “Jam”, delivery time increases by approximately 3.94 minutes, while “Low” traffic significantly reduces delivery time by nearly 6 minutes compared to the reference category (likely “High” or missing). “Medium” traffic also leads to a slight but significant reduction in delivery time. Surprisingly, geo_distance_km is not a statistically significant predictor (p = 0.498), suggesting that distance alone does not significantly affect delivery time, likely because traffic conditions have a much larger impact. This highlights that real-time traffic conditions are more influential than raw distance in predicting delivery duration in urban delivery systems.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h2_model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-9" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-9">Interpretation:</h6>
+<ol type="1">
+<li>Residuals vs Fitted Plot : In the plot, the residuals appear as distinct vertical clusters, which strongly suggests that one or more predictors are categorical or discretely valued —most likely Road_traffic_density. These clusters indicate that the model’s predictions change abruptly with certain levels of the predictor, rather than gradually. Importantly, the spread of residuals within each cluster appears reasonably centered around zero, though some clusters show more variance than others, hinting at potential heteroscedasticity (non-constant variance). This may reduce the reliability of standard error estimates and inferential statistics.</li>
+<li>Q-Q Plot : In this case, the residuals largely follow the theoretical line, suggesting that the normality assumption is reasonably satisfied. However, some deviations occur at the tails, particularly on the right side, indicating the presence of a few extreme positive residuals. While not severe, this tail deviation could potentially affect the validity of hypothesis tests and confidence intervals. If this trend persists across models, transformations or robust regression techniques may be considered.</li>
+<li>Scale-Location Plot : Similar to the residuals vs fitted plot, there are clear band-like formations, again reflecting discrete predictor levels. The red trend line is slightly upward sloping, suggesting that the variance of residuals may increase as fitted values increase —an indication of mild heteroscedasticity. This trend, if significant, could weaken the reliability of standard errors and p-values, although the overall spread is not extreme.</li>
+<li>Residuals vs Leverage Plot : Most observations are concentrated on the left side (low leverage), but a few points on the right show moderate leverage combined with large standardized residuals, approaching the Cook’s distance threshold. This suggests that there may be a few influential observations in the dataset that warrant further investigation. Although none clearly exceed the Cook’s distance line, these borderline points may benefit from closer inspection or sensitivity analysis to determine their influence on model coefficients.</li>
+</ol>
+<p>Here, the model h2_model1 shows a reasonably good fit, particularly in terms of residual normality and absence of extreme influence. However, the presence of distinct vertical bands in the residual plots strongly indicates that one of the predictors is categorical Road_traffic_density and that the linear model might not fully capture nuances across its levels. Additionally, slight heteroscedasticity is evident, as residual variance seems to increase with higher fitted values. These limitations suggest that while the model is statistically acceptable, its predictive and explanatory power could likely be improved by either transforming predictors, applying generalized linear modeling techniques, or including interaction terms to better model group-specific effects.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>h2_model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Time_taken_min <span class="sc">~</span> geo_distance_km <span class="sc">+</span> Road_traffic_density <span class="sc">+</span> geo_distance_km<span class="sc">*</span>Road_traffic_density, <span class="at">data =</span> data2)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h2_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Time_taken_min ~ geo_distance_km + Road_traffic_density + 
+    geo_distance_km * Road_traffic_density, data = data2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-21.178  -6.178  -0.268   5.732  27.647 
+
+Coefficients:
+                                             Estimate Std. Error t value
+(Intercept)                                27.2343848  0.1278313 213.049
+geo_distance_km                             0.0001373  0.0002154   0.637
+Road_traffic_densityJam                     3.9441042  0.1465098  26.920
+Road_traffic_densityLow                    -5.9662928  0.1449787 -41.153
+Road_traffic_densityMedium                 -0.5258228  0.1515159  -3.470
+Road_traffic_densityNaN                    -0.6450496  0.4107062  -1.571
+geo_distance_km:Road_traffic_densityJam    -0.0001710  0.0002411  -0.709
+geo_distance_km:Road_traffic_densityLow    -0.0001560  0.0002330  -0.669
+geo_distance_km:Road_traffic_densityMedium -0.0003218  0.0002539  -1.267
+geo_distance_km:Road_traffic_densityNaN    -0.0001506  0.0002214  -0.680
+                                           Pr(&gt;|t|)    
+(Intercept)                                 &lt; 2e-16 ***
+geo_distance_km                             0.52382    
+Road_traffic_densityJam                     &lt; 2e-16 ***
+Road_traffic_densityLow                     &lt; 2e-16 ***
+Road_traffic_densityMedium                  0.00052 ***
+Road_traffic_densityNaN                     0.11629    
+geo_distance_km:Road_traffic_densityJam     0.47813    
+geo_distance_km:Road_traffic_densityLow     0.50326    
+geo_distance_km:Road_traffic_densityMedium  0.20507    
+geo_distance_km:Road_traffic_densityNaN     0.49631    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.483 on 45583 degrees of freedom
+Multiple R-squared:  0.1829,    Adjusted R-squared:  0.1827 
+F-statistic:  1134 on 9 and 45583 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-10" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-10">Interpretation:</h6>
+<p>The regression model assesses the effect of geo_distance_km, Road_traffic_density, and their interaction on Time_taken_min. The overall model is statistically significant (F-statistic = 1134, p &lt; 2.2e-16), but the adjusted R² of 0.1827 indicates that the model explains only about 18.3% of the variance in delivery time. Among the main effects, road traffic density continues to show strong influence: deliveries during “Jam” traffic increase time by ~3.94 minutes, while “Low” traffic reduces it by nearly 6 minutes, and “Medium” traffic leads to a small but significant reduction compared to the baseline category. However, geo_distance_km itself and all its interaction terms with traffic density are not statistically significant, suggesting that the effect of distance on delivery time does not vary meaningfully by traffic level. In summary, traffic density alone significantly impacts delivery time, but including interaction terms with distance does not improve explanatory power, indicating that traffic affects delivery time independently of distance in this dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h2_model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-11" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-11">Interpretation:</h6>
+<ol type="1">
+<li>Residuals vs Fitted : The residuals appear to have a non-random, possibly clustered pattern, especially around specific fitted values, suggesting some heteroscedasticity or model misspecification. The residual spread does not appear consistent across all fitted values—especially at the extremes—indicating that the variance of the errors might not be constant. This could signal that transformations or additional predictors might be needed to improve the model fit.</li>
+<li>Normal Q-Q : Here, the residuals deviate from the straight line, particularly in the tails, indicating that the residuals are not perfectly normally distributed. This deviation, especially the upward curve on the right, shows a positive skew, meaning there are more large positive residuals than would be expected under normality.</li>
+<li>Scale-Location (Spread-Location) : A horizontal red line suggests constant variance. However, the plot shows a somewhat curved trend in the residual spread, suggesting some non-constant variance. This could be another signal of heteroscedasticity, indicating that model predictions are more reliable at some levels of the fitted values than others.</li>
+<li>Residuals vs Leverage :Most data points have low leverage and low standardized residuals. However, a few points, such as 10154, stand out with high leverage and moderately large residuals, indicating that they may be influential. Observations beyond Cook’s distance lines might warrant closer inspection, as they could be unduly affecting model estimates. Overall, the diagnostic plots suggest that while the model captures some structure in the data, there are signs of potential issues: residuals show non-constant variance, some deviation from normality, and a few potentially influential points. The interaction between geo_distance_km and Road_traffic_density may be important, but the model may benefit from further refinement, such as variable transformation, robust regression, or including additional predictors.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>h2_model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Time_taken_min <span class="sc">~</span> geo_distance_km <span class="sc">+</span> Road_traffic_density <span class="sc">+</span> Weatherconditions <span class="sc">+</span> multiple_deliveries <span class="sc">+</span> Vehicle_condition <span class="sc">+</span> Delivery_person_Ratings <span class="sc">+</span> City <span class="sc">+</span> Festival <span class="sc">+</span> Type_of_vehicle <span class="sc">+</span> Type_of_order, <span class="at">data =</span> data2)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h2_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Time_taken_min ~ geo_distance_km + Road_traffic_density + 
+    Weatherconditions + multiple_deliveries + Vehicle_condition + 
+    Delivery_person_Ratings + City + Festival + Type_of_vehicle + 
+    Type_of_order, data = data2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-35.729  -4.509  -0.213   4.253  33.541 
+
+Coefficients: (1 not defined because of singularities)
+                                         Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)                             5.135e+01  1.950e+00  26.326  &lt; 2e-16
+geo_distance_km                         2.522e-04  6.666e-05   3.783 0.000155
+Road_traffic_densityJam                 2.782e+00  1.158e-01  24.030  &lt; 2e-16
+Road_traffic_densityLow                -5.098e+00  1.147e-01 -44.430  &lt; 2e-16
+Road_traffic_densityMedium             -2.447e-01  1.194e-01  -2.050 0.040371
+Road_traffic_densityNaN                -6.244e+00  8.537e-01  -7.314 2.64e-13
+Weatherconditionsconditions Fog        -4.730e-02  1.089e-01  -0.434 0.663964
+Weatherconditionsconditions NaN                NA         NA      NA       NA
+Weatherconditionsconditions Sandstorms -2.758e+00  1.100e-01 -25.078  &lt; 2e-16
+Weatherconditionsconditions Stormy     -2.727e+00  1.094e-01 -24.935  &lt; 2e-16
+Weatherconditionsconditions Sunny      -5.992e+00  1.110e-01 -54.001  &lt; 2e-16
+Weatherconditionsconditions Windy      -2.633e+00  1.099e-01 -23.948  &lt; 2e-16
+multiple_deliveries                     3.590e+00  5.736e-02  62.586  &lt; 2e-16
+Vehicle_condition                      -2.106e+00  5.073e-02 -41.506  &lt; 2e-16
+Delivery_person_Ratings                -7.575e+00  9.613e-02 -78.801  &lt; 2e-16
+CityNaN                                -2.892e+00  2.005e-01 -14.428  &lt; 2e-16
+CitySemi-Urban                          1.104e+01  5.361e-01  20.588  &lt; 2e-16
+CityUrban                              -2.370e+00  7.697e-02 -30.790  &lt; 2e-16
+FestivalNo                              8.536e+00  4.557e-01  18.732  &lt; 2e-16
+FestivalYes                             1.945e+01  5.122e-01  37.970  &lt; 2e-16
+Type_of_vehicleelectric_scooter         5.251e+00  1.849e+00   2.840 0.004516
+Type_of_vehiclemotorcycle               4.804e+00  1.850e+00   2.596 0.009423
+Type_of_vehiclescooter                  4.376e+00  1.849e+00   2.367 0.017954
+Type_of_orderDrinks                    -1.059e-01  8.972e-02  -1.180 0.237902
+Type_of_orderMeal                      -7.643e-04  8.952e-02  -0.009 0.993188
+Type_of_orderSnack                     -8.574e-03  8.941e-02  -0.096 0.923605
+                                          
+(Intercept)                            ***
+geo_distance_km                        ***
+Road_traffic_densityJam                ***
+Road_traffic_densityLow                ***
+Road_traffic_densityMedium             *  
+Road_traffic_densityNaN                ***
+Weatherconditionsconditions Fog           
+Weatherconditionsconditions NaN           
+Weatherconditionsconditions Sandstorms ***
+Weatherconditionsconditions Stormy     ***
+Weatherconditionsconditions Sunny      ***
+Weatherconditionsconditions Windy      ***
+multiple_deliveries                    ***
+Vehicle_condition                      ***
+Delivery_person_Ratings                ***
+CityNaN                                ***
+CitySemi-Urban                         ***
+CityUrban                              ***
+FestivalNo                             ***
+FestivalYes                            ***
+Type_of_vehicleelectric_scooter        ** 
+Type_of_vehiclemotorcycle              ** 
+Type_of_vehiclescooter                 *  
+Type_of_orderDrinks                       
+Type_of_orderMeal                         
+Type_of_orderSnack                        
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.533 on 42727 degrees of freedom
+  (2841 observations deleted due to missingness)
+Multiple R-squared:  0.514, Adjusted R-squared:  0.5138 
+F-statistic:  1883 on 24 and 42727 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-12" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-12">Interpretation:</h6>
+<p>With an adjusted R-squared of 0.5138, the model explains approximately 51.4% of the variability in delivery time based on variables such as distance, traffic, weather, vehicle and delivery attributes, and city type. Statistically significant predictors include road traffic density, multiple deliveries, delivery person ratings, vehicle condition, weather, and the presence of festivals. Heavier traffic, especially during jams, and conducting multiple deliveries are associated with longer delivery times, while better vehicle condition and higher delivery person ratings contribute to faster deliveries. Interestingly, deliveries during festivals are significantly delayed, with an average increase of over 19 minutes, while semi-urban locations tend to have much longer delivery times than urban areas. Among vehicle types, electric scooters, motorcycles, and scooters all show increased delivery times compared to the baseline vehicle. Surprisingly, weather conditions such as sandstorms and storms are associated with reduced delivery times, possibly due to operational adjustments or data confounding. Order type does not significantly affect delivery time, and one weather-related variable was excluded from the model due to singularity, suggesting redundancy or lack of variability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h2_model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-13" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-13">Interpretation:</h6>
+<ol type="1">
+<li>Residuals vs Fitted : There is a clear funnel shape, where the spread of residuals decreases as fitted values increase. This pattern indicates heteroscedasticity, meaning that the variance of the residuals is not constant across all levels of fitted values. This could reduce the efficiency of the coefficient estimates and violate key assumptions of OLS regression. A transformation of the response variable or weighted regression may be necessary to address this.</li>
+<li>Normal Q-Q Plot : While the middle portion of the plot roughly aligns with the 45-degree reference line, the tails deviate significantly. Specifically, the residuals on both ends are more extreme than what would be expected under a normal distribution. This suggests the presence of outliers and non-normality in the residuals, which can impact hypothesis testing and confidence intervals.</li>
+<li>Scale-Location Plot : Similar to the first plot, there’s a clear curve with higher residual spread on the lower end of fitted values. This again confirms non-constant variance in the errors, and like the Residuals vs Fitted plot, suggests that certain model assumptions are being violated.</li>
+<li>Residuals vs Leverage : While most points lie within safe bounds, a few (e.g., points 39709, 29865, 38580) show high residuals and/or high leverage. These points may warrant further investigation, as they could be influential outliers. Some of them are close to or beyond the threshold lines for Cook’s distance, indicating that they may significantly affect the regression coefficients. Overall, the model h2_model3 includes a richer set of predictors, which might improve predictive power, but the diagnostic plots suggest some assumptions are still violated. There are clear signs of heteroscedasticity, non-normal residuals, and potential outliers or influential points.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>h2_model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Time_taken_min <span class="sc">~</span> geo_distance_km <span class="sc">+</span> Road_traffic_density <span class="sc">+</span> geo_distance_km<span class="sc">*</span>Road_traffic_density <span class="sc">+</span> Weatherconditions <span class="sc">+</span> multiple_deliveries <span class="sc">+</span> Vehicle_condition <span class="sc">+</span> Delivery_person_Ratings <span class="sc">+</span> City <span class="sc">+</span> Festival <span class="sc">+</span> Type_of_vehicle <span class="sc">+</span> Type_of_order, <span class="at">data =</span> data2)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h2_model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Time_taken_min ~ geo_distance_km + Road_traffic_density + 
+    geo_distance_km * Road_traffic_density + Weatherconditions + 
+    multiple_deliveries + Vehicle_condition + Delivery_person_Ratings + 
+    City + Festival + Type_of_vehicle + Type_of_order, data = data2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-37.566  -4.507  -0.217   4.251  34.271 
+
+Coefficients: (1 not defined because of singularities)
+                                             Estimate Std. Error t value
+(Intercept)                                 5.151e+01  1.951e+00  26.399
+geo_distance_km                            -6.661e-05  3.165e-04  -0.210
+Road_traffic_densityJam                     2.787e+00  1.161e-01  23.996
+Road_traffic_densityLow                    -5.102e+00  1.151e-01 -44.336
+Road_traffic_densityMedium                 -2.527e-01  1.197e-01  -2.110
+Road_traffic_densityNaN                    -7.078e+00  9.082e-01  -7.794
+Weatherconditionsconditions Fog            -4.830e-02  1.089e-01  -0.444
+Weatherconditionsconditions NaN                    NA         NA      NA
+Weatherconditionsconditions Sandstorms     -2.757e+00  1.100e-01 -25.072
+Weatherconditionsconditions Stormy         -2.729e+00  1.094e-01 -24.954
+Weatherconditionsconditions Sunny          -5.993e+00  1.110e-01 -54.007
+Weatherconditionsconditions Windy          -2.635e+00  1.099e-01 -23.971
+multiple_deliveries                         3.590e+00  5.735e-02  62.590
+Vehicle_condition                          -2.105e+00  5.073e-02 -41.498
+Delivery_person_Ratings                    -7.587e+00  9.623e-02 -78.841
+CityNaN                                    -2.897e+00  2.005e-01 -14.450
+CitySemi-Urban                              1.103e+01  5.361e-01  20.579
+CityUrban                                  -2.368e+00  7.697e-02 -30.765
+FestivalNo                                  8.538e+00  4.557e-01  18.738
+FestivalYes                                 1.944e+01  5.122e-01  37.961
+Type_of_vehicleelectric_scooter             5.138e+00  1.849e+00   2.778
+Type_of_vehiclemotorcycle                   4.694e+00  1.850e+00   2.537
+Type_of_vehiclescooter                      4.266e+00  1.849e+00   2.307
+Type_of_orderDrinks                        -1.060e-01  8.972e-02  -1.182
+Type_of_orderMeal                           1.340e-03  8.952e-02   0.015
+Type_of_orderSnack                         -6.997e-03  8.941e-02  -0.078
+geo_distance_km:Road_traffic_densityJam    -1.250e-04  3.702e-04  -0.338
+geo_distance_km:Road_traffic_densityLow     1.790e-04  3.589e-04   0.499
+geo_distance_km:Road_traffic_densityMedium  3.376e-04  3.948e-04   0.855
+geo_distance_km:Road_traffic_densityNaN     4.651e-04  3.280e-04   1.418
+                                           Pr(&gt;|t|)    
+(Intercept)                                 &lt; 2e-16 ***
+geo_distance_km                             0.83330    
+Road_traffic_densityJam                     &lt; 2e-16 ***
+Road_traffic_densityLow                     &lt; 2e-16 ***
+Road_traffic_densityMedium                  0.03485 *  
+Road_traffic_densityNaN                    6.64e-15 ***
+Weatherconditionsconditions Fog             0.65730    
+Weatherconditionsconditions NaN                  NA    
+Weatherconditionsconditions Sandstorms      &lt; 2e-16 ***
+Weatherconditionsconditions Stormy          &lt; 2e-16 ***
+Weatherconditionsconditions Sunny           &lt; 2e-16 ***
+Weatherconditionsconditions Windy           &lt; 2e-16 ***
+multiple_deliveries                         &lt; 2e-16 ***
+Vehicle_condition                           &lt; 2e-16 ***
+Delivery_person_Ratings                     &lt; 2e-16 ***
+CityNaN                                     &lt; 2e-16 ***
+CitySemi-Urban                              &lt; 2e-16 ***
+CityUrban                                   &lt; 2e-16 ***
+FestivalNo                                  &lt; 2e-16 ***
+FestivalYes                                 &lt; 2e-16 ***
+Type_of_vehicleelectric_scooter             0.00547 ** 
+Type_of_vehiclemotorcycle                   0.01119 *  
+Type_of_vehiclescooter                      0.02108 *  
+Type_of_orderDrinks                         0.23728    
+Type_of_orderMeal                           0.98805    
+Type_of_orderSnack                          0.93762    
+geo_distance_km:Road_traffic_densityJam     0.73552    
+geo_distance_km:Road_traffic_densityLow     0.61807    
+geo_distance_km:Road_traffic_densityMedium  0.39249    
+geo_distance_km:Road_traffic_densityNaN     0.15619    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.533 on 42723 degrees of freedom
+  (2841 observations deleted due to missingness)
+Multiple R-squared:  0.5141,    Adjusted R-squared:  0.5138 
+F-statistic:  1615 on 28 and 42723 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-14" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-14">Interpretation:</h6>
+<p>This extended linear regression model investigates the factors influencing delivery time (Time_taken_min) while adding an interaction term between geo_distance_km and Road_traffic_density to capture how the effect of distance might vary under different traffic conditions. The model remains statistically significant overall (F(28, 42723) = 1615, p &lt; 2.2e-16) with an Adjusted R-squared of 0.5138, indicating that about 51.4% of the variability in delivery time is explained by the included variables. The residual standard error is 6.533, meaning the model’s average prediction error is approximately 6.5 minutes. Despite including the interaction term, the main effect of geo_distance_km becomes statistically insignificant (p = 0.833), suggesting that distance alone, once accounting for interaction with traffic, does not significantly predict delivery time. Among the traffic conditions, delivery time increases substantially under “Jam” traffic conditions (+2.79 mins) and decreases under “Low” traffic conditions (-5.10 mins), both with high significance. The “Medium” traffic condition also has a mild but significant negative impact (-0.25 mins), while “NaN” entries again show a strong negative association, possibly indicating fast deliveries in cases where traffic data is missing due to certain system or operational shortcuts. Interestingly, the interaction terms between distance and traffic conditions are all statistically insignificant. This suggests that the relationship between distance and delivery time does not meaningfully differ across traffic levels in this dataset. For example, the coefficient for the interaction between distance and “Jam” is -0.000125 (p = 0.735), indicating no significant moderating effect. While this interaction term was added to explore more nuanced patterns, its lack of significance implies that modeling distance and traffic as independent effects is sufficient. Weather continues to be a strong predictor. Conditions such as Sandstorms, Stormy, Sunny, and Windy are all associated with significantly reduced delivery times (e.g., Sunny weather reduces time by nearly 6 minutes). This counterintuitive result could be due to operational changes in extreme weather (e.g., shorter routes or fewer orders), model confounding, or underlying data characteristics. Notably, the “Fog” condition and missing weather entries show no significant effect. Operational factors play a major role in delivery times. Multiple deliveries per trip add about 3.59 minutes on average, highlighting logistical complexity. Vehicle condition and delivery person ratings have substantial negative coefficients (-2.11 and -7.59 respectively), meaning that better vehicle condition and higher-rated delivery personnel are strongly associated with shorter delivery times. This underlines the importance of personnel quality and equipment maintenance in delivery efficiency. Geographical location also influences performance. Deliveries in semi-urban areas take about 11 minutes longer, whereas urban areas are about 2.37 minutes faster compared to the baseline. The presence of festivals is associated with sharp increases in delivery time: +8.54 minutes on non-festival days and +19.44 minutes on festival days, both highly significant. These findings point to heavy operational loads and traffic during holidays and special events. Vehicle type significantly affects delivery speed. Electric scooters, motorcycles, and scooters all have longer delivery times (ranging from +4.26 to +5.14 minutes) compared to the base vehicle type (likely a car or bicycle). This may be due to speed limitations, road restrictions, or delivery capacity differences among vehicles. On the other hand, the type of order (Drinks, Meal, Snack) again shows no significant effect on delivery time, suggesting that delivery time is more influenced by external and operational factors than by what is being delivered. Overall, the model confirms that traffic conditions, weather, city type, delivery practices, personnel quality, and festival events significantly impact delivery times, whereas order type and distance (particularly when interacting with traffic) do not appear to play as large a role as might be expected. The lack of significance in the interaction terms implies that modeling traffic and distance as separate additive effects is adequate. Additionally, the exclusion of one coefficient due to singularity and deletion of 2,841 observations due to missing values indicates potential data quality or preprocessing issues that might need further exploration.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(h2_model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Full_Version_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interpretation-15" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-15">Interpretation:</h6>
+<ol type="1">
+<li>Residuals vs Fitted Plot : A noticeable funnel shape persists, where residuals become more concentrated as fitted values increase. This indicates <strong>heteroscedasticity</strong>, meaning that the variability of errors changes across the range of fitted values. The presence of a curved red line further supports this observation, suggesting that the model may not be fully capturing the underlying structure of the data, especially at higher fitted values.</li>
+<li>Normal Q-Q Plot : Here, the residuals show notable deviation from the theoretical quantile line at both tails, suggesting non-normality. A few observations (like 39709) lie far from the line, indicating outliers or extreme residuals. Although the center of the distribution appears roughly normal, the fat tails suggest issues that might affect hypothesis tests and confidence intervals.</li>
+<li>Scale-Location Plot : Similar to the Residuals vs Fitted plot, this one reveals increasing variance with higher fitted values. This upward trend in residual spread reaffirms heteroscedasticity, indicating the potential need for data transformation (e.g., log transformation of the response variable) or a more robust regression approach.</li>
+<li>Residuals vs Leverage Plot : While the majority of observations lie within acceptable bounds, a few (e.g., 39709, 23665, 38580) stand out as potentially influential points. These observations might have an outsized impact on the model’s coefficients. One or two points fall close to or beyond Cook’s distance threshold, suggesting they merit further investigation or potential removal, depending on their validity. Overall, the model h2_model4 represents an advanced version of previous models by including an interaction term and a broad set of predictors. However, the diagnostic plots indicate that several assumptions of linear regression—namely, homoscedasticity and normality of residuals —are violated. The presence of influential outliers further complicates model reliability.</li>
+</ol>
+</section>
+<section id="comparing-models-1" class="level4">
+<h4 class="anchored" data-anchor-id="comparing-models-1">Comparing Models</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(h2_model1, h2_model2, h2_model3, h2_model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          df      AIC
+h2_model1  7 324357.2
+h2_model2 11 324363.1
+h2_model3 26 281837.1
+h2_model4 30 281835.1</code></pre>
+</div>
+</div>
+<section id="interpretation-16" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-16">Interpretation:</h6>
+<p>In this comparison h2_model1 has the simplest structure with 7 degrees of freedom and an AIC of 324,357.2, while h2_model2 has slightly more complexity (11 degrees of freedom) but a marginally worse AIC of 324,363.1. Both these models perform significantly worse in terms of model fit compared to the next two. This suggests that although they are simpler, their ability to capture the variation in the data is limited, likely due to insufficient inclusion of predictive variables or interactions. A significant improvement is seen in h2_model3, which includes 26 parameters and has a much lower AIC of 281,837.1. This drastic drop in AIC (over 42,000 points compared to the earlier models) indicates a much better fit to the data, even though the model is more complex. It suggests that incorporating additional predictors, potentially including interaction terms or nonlinear components, greatly enhances the model’s explanatory power. The h2_model4 model goes a step further with 30 degrees of freedom and achieves the lowest AIC at 281,835.1, making it the best model among the four based on this metric. Although the AIC improvement from h2_model3 to h2_model4 is relatively small (about 2 points), it is still a formal improvement. This implies that h2_model4 may include important additional predictors or refinements that slightly enhance its performance, without causing overfitting. In summary, the AIC comparison clearly favors h2_model3 and h2_model4, with a strong recommendation toward h2_model4 due to its optimal balance of model fit and complexity. However, given how marginal the difference is between h2_model3 and h2_model4, one might prefer h2_model3 if model simplicity and interpretability are prioritized. On the other hand, h2_model1 and h2_model2 fall short significantly and are not suitable for reliable prediction in this context.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(h2_model1, h2_model2, h2_model3, h2_model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          df      BIC
+h2_model1  7 324418.2
+h2_model2 11 324459.1
+h2_model3 26 282062.3
+h2_model4 30 282095.0</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-17" class="level6">
+<h6 class="anchored" data-anchor-id="interpretation-17">Interpretation:</h6>
+<p>Here, the h2_model1 has the simplest structure (7 degrees of freedom), the BIC is 324,418.2. This serves as a baseline. h2_model2, with 11 degrees of freedom, has a higher BIC of 324,459.1, indicating that the additional parameters do not sufficiently improve the model’s fit to justify the added complexity. Thus, between these two, h2_model1 is preferred, as it provides a slightly better balance of simplicity and performance under the BIC criterion. When we look at h2_model3, which includes 26 parameters, there is a dramatic drop in BIC to 282,062.3. This indicates a significantly better model fit than either of the first two models. Despite having more parameters, the model’s explanatory power is strong enough to overcome the BIC penalty for added complexity. This suggests that the variables and interactions added in h2_model3 contribute meaningfully to predicting delivery time. Finally, h2_model4 includes 30 parameters and has a BIC of 282,095.0. While this is still much better than the simpler models (h2_model1 and h2_model2), it is slightly higher than the BIC for h2_model3. This means that even though h2_model4 had the lowest AIC in your previous analysis, the additional complexity is not justified under BIC. In essence, the BIC is signaling that h2_model4 might be overfitting the data slightly by including more parameters than necessary. In conclusion, while both h2_model3 and h2_model4 outperform the simpler models by a large margin, h2_model3 is the preferred model according to BIC. It strikes the optimal balance between model complexity and fit. The heavier penalty BIC applies to extra parameters helps highlight that the improvements in h2_model4 are marginal and not substantial enough to warrant the additional complexity. Therefore, if you’re prioritizing generalizability and parsimony, h2_model3 is the best choice.</p>
+</section>
+</section>
+<section id="final-model-1" class="level4">
+<h4 class="anchored" data-anchor-id="final-model-1">Final Model</h4>
+<p>Based on the comparative evaluation of both the Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) for models h2_model1 through h2_model4, h2_model3 offers the most technically robust and balanced solution. While h2_model4 has the lowest AIC (281835.1), indicating a slightly better fit, its AIC improvement over h2_model3 (281837.1) is marginal—just 2 points—which is considered negligible in model selection. However, the BIC, which penalizes model complexity more stringently, favors h2_model3 (BIC = 282062.3) over h2_model4 (BIC = 282095.0). This suggests that the additional complexity and number of parameters in h2_model4 (30 degrees of freedom) do not offer a meaningful advantage in explaining variance compared to h2_model3 (26 degrees of freedom). Furthermore, model diagnostic plots (from your earlier outputs) for <code>h2_model3</code> indicate an acceptable distribution of residuals and leverage, without excessive influence from outliers or violations of homoscedasticity. Therefore, from both an information-theoretic and diagnostic standpoint, h2_model3 balances model fit, generalizability, and parsimony better than the other candidates. It captures substantial explanatory power without overfitting or unnecessarily complicating the model. Thus, h2_model3 is the recommended final model for inference and predictive analysis.</p>
+</section>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>This study systematically explored the key drivers of delivery time performance across e-commerce grocery platforms using two real-world datasets. The first dataset focused on platform-specific and transactional factors such as order value and platform type (Blinkit, Swiggy Instamart, JioMart), while the second examined the influence of dynamic environmental conditions like road traffic density and weather on delivery delays. For both datasets, rigorous regression modeling and model selection techniques, including AIC, BIC, and diagnostic validation, were employed to ensure robustness and parsimony. In Dataset 1, Model h1_model2 was selected as the final model, striking an optimal balance between explanatory power and model simplicity, as supported by both AIC and BIC criteria. This model effectively captured the influence of platform-specific operational patterns on delivery efficiency. In Dataset 2, Model h2_model3 emerged as the most appropriate model, demonstrating that real-time traffic and weather conditions significantly impact delivery delays, while also maintaining favorable model diagnostics and avoiding overfitting. Collectively, these findings underscore the multidimensional nature of delivery time determinants—combining both static platform-level characteristics and dynamic external disruptions. The validated models not only provide actionable insights for improving logistics strategies but also serve as a foundation for developing more intelligent, data-driven delivery forecasting systems. These contributions are particularly valuable for stakeholders seeking to optimize last-mile delivery under uncertain real-world conditions.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<ol type="1">
+<li>Wolf, T., &amp; Zhang, Y. (2023). Assessing the e-commerce last-mile logistics’ hidden risk hurdles. Journal of Transport Geography, 106, 103123. https://doi.org/10.1016/j.jtrangeo.2023.103123 ￼</li>
+<li>Truden, C., Maier, K., Jellen, A., &amp; Hungerländer, P. (2020). Computational approaches for grocery home delivery services. arXiv preprint arXiv:2010.00385. https://arxiv.org/abs/2010.00385 ￼</li>
+<li>Liu, S., &amp; Luo, Z. (2021). On-demand delivery from stores: Dynamic dispatching and routing with random demand. arXiv preprint arXiv:2107.13058. https://arxiv.org/abs/2107.13058 ￼</li>
+<li>Giraldo-Herrera, D., &amp; Álvarez-Martínez, D. (2024). A GRASP algorithm for the meal delivery routing problem. arXiv preprint arXiv:2408.06353. https://arxiv.org/abs/2408.06353 ￼</li>
+<li>Harward, A., Lin, J., Wang, Y., &amp; Xie, X. (2024). Optimization of delivery routes for fresh e-commerce in pre-warehouse mode. arXiv preprint arXiv:2412.00634. https://arxiv.org/abs/2412.00634 ￼</li>
+<li>Zhang, Y., &amp; Wang, H. (2025). Sustainable e-grocery home delivery: An optimization model. Transportation Research Part E: Logistics and Transportation Review, 172, 102982. https://doi.org/10.1016/j.tre.2025.102982 ￼</li>
+<li>Prasetyo, Y. T., &amp; Hanjaya, C. (2024). Demographic analysis of online grocery shopping during the COVID-19 pandemic: A theoretical perspective with an expanded technology acceptance model. Cogent Business &amp; Management, 11(1), 2336712. https://doi.org/10.1080/23311975.2024.2336712 ￼</li>
+<li>Geotab. (2025). How weather delays can affect your supply chain. Retrieved from https://www.geotab.com/blog/weather-delays/ ￼</li>
+</ol>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
